@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37111.16 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwsSchedulerTrigger.Console", "AwsSchedulerTrigger.Console\AwsSchedulerTrigger.Console.csproj", "{CBED19F4-79E3-4553-A5E8-EC7B9CE8DC48}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CBED19F4-79E3-4553-A5E8-EC7B9CE8DC48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBED19F4-79E3-4553-A5E8-EC7B9CE8DC48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBED19F4-79E3-4553-A5E8-EC7B9CE8DC48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBED19F4-79E3-4553-A5E8-EC7B9CE8DC48}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F4A449FD-76E1-4C3C-AE72-EA7137A20B11}
+	EndGlobalSection
+EndGlobal
