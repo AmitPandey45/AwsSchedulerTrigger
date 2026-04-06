@@ -29,7 +29,7 @@
                 });
         }
 
-        public static int CalculateDelay(int attempt, int baseDelayMs = 5000)
+        public static int CalculateDelay(int attempt, int baseDelayMs = BaseDelayMs)
         {
             // Exponential backoff: delay * (2^(attempt-1))
             double expoBackoff = Math.Pow(2, attempt - 1) * baseDelayMs;
