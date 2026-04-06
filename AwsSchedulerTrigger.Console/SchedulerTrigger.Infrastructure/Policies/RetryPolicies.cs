@@ -23,11 +23,12 @@
 
                     return TimeSpan.FromMilliseconds(exponentialDelayMs + jitterMs);
                 },
-                onRetry: (outcome, timespan, retryAttempt, context) =>
+                onRetry: async (outcome, timespan, retryAttempt, context) =>
                 {
                     Console.WriteLine(
-                        $"Retry {retryAttempt} after {timespan.TotalSeconds:F2}s due to " +
+                        $"[Async Retry] Attempt {retryAttempt} waiting {timespan.TotalSeconds:F2}s due to " +
                         $"{outcome.Exception?.Message ?? outcome.Result.StatusCode.ToString()}");
+                    await Task.CompletedTask;
                 });
         }
     }

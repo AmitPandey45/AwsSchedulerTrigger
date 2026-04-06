@@ -19,7 +19,6 @@
                 var options = provider.GetRequiredService<IOptions<SchedulerApiOptions>>().Value;
                 client.BaseAddress = new Uri(options.BaseUrl);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
-                client.Timeout = TimeSpan.FromSeconds(30);
             })
             .AddPolicyHandler(RetryPolicies.GetRetryPolicy());
 

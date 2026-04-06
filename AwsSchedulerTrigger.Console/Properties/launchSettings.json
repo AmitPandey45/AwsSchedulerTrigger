@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AwsSchedulerTrigger.Console.Args": {
+      "commandName": "Project",
+      "commandLineArgs": "DmsClosingReport MY_API_KEY"
+    }
+  }
+}
