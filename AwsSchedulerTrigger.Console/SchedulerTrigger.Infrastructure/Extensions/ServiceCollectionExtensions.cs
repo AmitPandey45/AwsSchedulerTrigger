@@ -6,6 +6,7 @@
     using AwsSchedulerTrigger.Console.SchedulerTrigger.Infrastructure.Policies;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
 
     public static class ServiceCollectionExtensions
@@ -20,7 +21,12 @@
                 client.BaseAddress = new Uri(options.BaseUrl);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
             })
-            .AddPolicyHandler(RetryPolicies.GetRetryPolicy());
+            .AddPolicyHandler((provider, request) =>
+            {
+                var logger = provider.GetRequiredService<ILogger<SchedulerClient>>();
+
+                return RetryPolicies.GetRetryPolicy(logger);
+            });
 
             return services;
         }

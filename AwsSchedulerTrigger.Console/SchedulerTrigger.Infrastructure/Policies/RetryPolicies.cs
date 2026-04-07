@@ -1,16 +1,17 @@
 ﻿namespace AwsSchedulerTrigger.Console.SchedulerTrigger.Infrastructure.Policies
 {
+    using Microsoft.Extensions.Logging;
     using Polly;
     using Polly.Extensions.Http;
     using System;
 
     public static class RetryPolicies
     {
-        private const int MaxDelayMs = 180_000;
+        private const int MaxDelayMs = 120_000;
         private const int BaseDelayMs = 5000;
         private static readonly Random _rng = new Random();
 
-        public static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        public static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy(ILogger logger)
         {
             return HttpPolicyExtensions
                 .HandleTransientHttpError()
@@ -22,9 +23,12 @@
                 },
                 onRetry: async (outcome, timespan, retryAttempt, context) =>
                 {
-                    Console.WriteLine(
-                        $"[Async Retry] Attempt {retryAttempt} waiting {timespan.TotalSeconds:F2}s due to " +
-                        $"{outcome.Exception?.Message ?? outcome.Result.StatusCode.ToString()}");
+                    logger.LogWarning(
+                        "Retry {RetryAttempt} after {Delay}s due to {Reason}",
+                        retryAttempt,
+                        timespan.TotalSeconds,
+                        outcome.Exception?.Message ?? outcome.Result.StatusCode.ToString());
+
                     await Task.CompletedTask;
                 });
         }

@@ -2,8 +2,21 @@
 using AwsSchedulerTrigger.ConsoleApp;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using MsLogLevel = Microsoft.Extensions.Logging.LogLevel;
+using NLog;
+using NLog.Extensions.Hosting;
 
-var builder = Host.CreateDefaultBuilder(args)
+var logger = LogManager.Setup().LoadConfigurationFromFile("nlog.config").GetCurrentClassLogger();
+try
+{
+    var builder = Host.CreateDefaultBuilder(args)
+    .ConfigureLogging(logging =>
+    {
+        logging.ClearProviders();
+        logging.SetMinimumLevel(MsLogLevel.Trace);
+    })
+    .UseNLog()
     .ConfigureServices((context, services) =>
     {
         // Use our extension method for cleaner DI
@@ -11,15 +24,17 @@ var builder = Host.CreateDefaultBuilder(args)
         services.AddTransient<App>();
     });
 
-var host = builder.Build();
+    var host = builder.Build();
 
-try
-{
     await host.Services.GetRequiredService<App>().RunAsync(args);
     Environment.ExitCode = 0;
 }
 catch (Exception ex)
 {
-    Console.WriteLine($"ERROR: {ex.ToString()}");
+    logger.Error(ex, "Application failed");
     Environment.ExitCode = 1;
+}
+finally
+{
+    LogManager.Shutdown();
 }
