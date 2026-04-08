@@ -34,7 +34,7 @@
                 throw new ArgumentException($"Scheduler '{schedulerName}' not found.");
             }
 
-            using var request = new HttpRequestMessage(HttpMethod.Get, scheduler.Endpoint);
+            using var request = new HttpRequestMessage(HttpMethod.Post, scheduler.Endpoint);
             request.Headers.Add("x-api-key", apiKey);
             var response = await this._httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
