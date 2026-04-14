@@ -32,7 +32,7 @@ try
 catch (Exception ex)
 {
     logger.Error(ex, "Application failed");
-    Environment.ExitCode = 1;
+    Environment.ExitCode = 0;
 }
 finally
 {

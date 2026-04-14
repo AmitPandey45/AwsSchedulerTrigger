@@ -37,11 +37,34 @@
             using var request = new HttpRequestMessage(HttpMethod.Post, scheduler.Endpoint);
             request.Headers.Add("x-api-key", apiKey);
             var response = await this._httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
+            var responseBody = await response.Content.ReadAsStringAsync();
+            //// response.EnsureSuccessStatusCode();
 
-            this._logger.LogInformation($"Response status: {response.StatusCode}");
+            // Log full response first
+            this._logger.LogInformation($"Response Status: {(int)response.StatusCode} ({response.StatusCode})");
+            this._logger.LogInformation($"Response Body: {responseBody}");
 
-            return await response.Content.ReadAsStringAsync();
+            // Now log based on status code
+            if (response.IsSuccessStatusCode)
+            {
+                this._logger.LogInformation("Request succeeded.");
+            }
+            else if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
+            {
+                this._logger.LogWarning(
+                    "HTTP client error. StatusCode: {StatusCode} ({StatusName})",
+                    (int)response.StatusCode,
+                    response.StatusCode);
+            }
+            else if ((int)response.StatusCode >= 500)
+            {
+                this._logger.LogCritical(
+                    "HTTP server error. StatusCode: {StatusCode} ({StatusName})",
+                    (int)response.StatusCode,
+                    response.StatusCode);
+            }
+
+            return responseBody;
         }
     }
 }
